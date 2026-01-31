@@ -1,0 +1,147 @@
+
+.container,
+.home-container,
+.quiz-container {
+  max-width: 700px;
+  margin: 80px auto;
+  padding: 35px;
+  border-radius: 14px;
+  text-align: center;
+  background-color: #1e1e2f;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  color: #fff;
+  font-family: Arial, sans-serif;
+}
+
+h1, h2, h3 {
+  margin-bottom: 15px;
+}
+
+/* Homepage */
+
+.home-title {
+  font-size: 38px;
+  margin-bottom: 18px;
+  color: #ffffff;
+}
+
+.home-description {
+  font-size: 16px;
+  color: #cfcfcf;
+  margin-bottom: 35px;
+  line-height: 1.6;
+}
+
+.home-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.home-btn {
+  padding: 14px;
+  font-size: 17px;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Buttons */
+.home-btn.start {
+  background: linear-gradient(135deg, #4caf50, #2e7d32);
+  color: white;
+}
+
+.home-btn.history {
+  background: linear-gradient(135deg, #2196f3, #1565c0);
+  color: white;
+}
+
+.home-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+}
+
+/* ================= QUIZ PAGE ================= */
+
+.quiz-container h3 {
+  color: #ffffff;
+  margin-bottom: 20px;
+}
+
+.quiz-container p {
+  color: #e0e0e0;
+  font-size: 18px;
+  margin-bottom: 25px;
+  line-height: 1.6;
+}
+
+button {
+  width: 100%;
+  padding: 12px;
+  margin-top: 12px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+/* Option buttons */
+.option {
+  background-color: #2a2a3d;
+  color: #ffffff;
+}
+
+.correct {
+  background-color: #4caf50;
+  color: white;
+}
+
+.wrong {
+  background-color: #f44336;
+  color: white;
+}
+
+/* Next button */
+.next-btn {
+  margin-top: 25px;
+  background: linear-gradient(135deg, #2196f3, #1565c0);
+  color: white;
+}
+
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* Historypage */
+
+.history-container {
+  max-width: 700px;
+  margin: 80px auto;
+  padding: 35px;
+  border-radius: 14px;
+  text-align: center;
+  background-color: #1e1e2f;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+  color: #fff;
+}
+
+.history-container h1 {
+  margin-bottom: 20px;
+}
+
+.history-container ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.history-container li {
+  background-color: #2a2a3d;
+  margin: 8px 0;
+  padding: 12px;
+  border-radius: 6px;
+  font-size: 16px;
+}
