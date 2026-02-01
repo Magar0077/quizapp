@@ -12,51 +12,71 @@ export default function Quiz() {
   useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=10&type=multiple")
       .then((res) => res.json())
-      .then((data) => setQuestions(data.results));
+      .then((data) => setQuestions(data.results))
+      .catch(() => alert("Failed to load questions"));
   }, []);
+
+  if (!questions.length) {
+    return <h2 className="quiz-container dark">Loading questions...</h2>;
+  }
+
+  const currentQuestion = questions[currentIndex];
+
+  const options = [
+    ...currentQuestion.incorrect_answers,
+    currentQuestion.correct_answer,
+  ].sort();
 
   const handleAnswer = (option) => {
     if (selectedAnswer) return;
 
     setSelectedAnswer(option);
 
-    if (option === questions[currentIndex].correct_answer) {
-      setScore(score + 1);
+    if (option === currentQuestion.correct_answer) {
+      setScore((prev) => prev + 1);
     }
   };
 
   const handleNext = () => {
     if (currentIndex + 1 < questions.length) {
-      setCurrentIndex(currentIndex + 1);
+      setCurrentIndex((prev) => prev + 1);
       setSelectedAnswer(null);
     } else {
+      const finalScore =
+        score + (selectedAnswer === currentQuestion.correct_answer ? 1 : 0);
+
       const history = JSON.parse(localStorage.getItem("quizHistory")) || [];
-      history.push({ score: score, date: new Date().toLocaleString() });
+      history.push({
+        score: finalScore,
+        date: new Date().toLocaleString(),
+      });
       localStorage.setItem("quizHistory", JSON.stringify(history));
-      navigate("/result", { state: { score } });
+
+      navigate("/result", { state: { score: finalScore } });
     }
   };
 
-  if (!questions.length) {
-    return <h2 className="quiz-container dark">Loading questions...</h2>;
-  }
-
-  const options = [
-    ...questions[currentIndex].incorrect_answers,
-    questions[currentIndex].correct_answer,
-  ].sort();
-
   return (
     <div className="quiz-container dark">
-      <h3>Question {currentIndex + 1} / {questions.length}</h3>
-      <p dangerouslySetInnerHTML={{ __html: questions[currentIndex].question }} />
+      <h3>
+        Question {currentIndex + 1} / {questions.length}
+      </h3>
+
+      <p
+        dangerouslySetInnerHTML={{ __html: currentQuestion.question }}
+      />
 
       {options.map((option, index) => {
         let btnClass = "option";
+
         if (selectedAnswer) {
-          if (option === questions[currentIndex].correct_answer) btnClass = "correct";
-          else if (option === selectedAnswer) btnClass = "wrong";
+          if (option === currentQuestion.correct_answer) {
+            btnClass = "correct";
+          } else if (option === selectedAnswer) {
+            btnClass = "wrong";
+          }
         }
+
         return (
           <button
             key={index}
@@ -69,7 +89,7 @@ export default function Quiz() {
 
       {selectedAnswer && (
         <button className="next-btn" onClick={handleNext}>
-          Next Question
+          {currentIndex + 1 === questions.length ? "Finish Quiz" : "Next Question"}
         </button>
       )}
     </div>
