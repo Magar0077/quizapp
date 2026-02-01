@@ -9,16 +9,14 @@ export default function Quiz() {
 
   const navigate = useNavigate();
 
-  // Fetch questions from given API
   useEffect(() => {
     fetch("https://opentdb.com/api.php?amount=10&type=multiple")
       .then((res) => res.json())
       .then((data) => setQuestions(data.results));
   }, []);
 
-  // Handle answer click
   const handleAnswer = (option) => {
-    if (selectedAnswer) return; // prevent multiple clicks
+    if (selectedAnswer) return;
 
     setSelectedAnswer(option);
 
@@ -27,57 +25,38 @@ export default function Quiz() {
     }
   };
 
-  // Move to next question or result
   const handleNext = () => {
     if (currentIndex + 1 < questions.length) {
       setCurrentIndex(currentIndex + 1);
       setSelectedAnswer(null);
     } else {
-      // Save history in localStorage
       const history = JSON.parse(localStorage.getItem("quizHistory")) || [];
-
-      history.push({
-        score: score,
-        date: new Date().toLocaleString(),
-      });
-
+      history.push({ score: score, date: new Date().toLocaleString() });
       localStorage.setItem("quizHistory", JSON.stringify(history));
-
       navigate("/result", { state: { score } });
     }
   };
 
   if (!questions.length) {
-    return <h2 className="quiz-container dark">Loading...</h2>;
+    return <h2 className="quiz-container dark">Loading questions...</h2>;
   }
 
-  // Combine and shuffle options
   const options = [
     ...questions[currentIndex].incorrect_answers,
     questions[currentIndex].correct_answer,
   ].sort();
 
   return (
-    <div className="container">
-      <h3>Question {currentIndex + 1} / 10</h3>
-
-      <p
-        dangerouslySetInnerHTML={{
-          __html: questions[currentIndex].question,
-        }}
-      />
+    <div className="quiz-container dark">
+      <h3>Question {currentIndex + 1} / {questions.length}</h3>
+      <p dangerouslySetInnerHTML={{ __html: questions[currentIndex].question }} />
 
       {options.map((option, index) => {
         let btnClass = "option";
-
         if (selectedAnswer) {
-          if (option === questions[currentIndex].correct_answer) {
-            btnClass = "correct";
-          } else if (option === selectedAnswer) {
-            btnClass = "wrong";
-          }
+          if (option === questions[currentIndex].correct_answer) btnClass = "correct";
+          else if (option === selectedAnswer) btnClass = "wrong";
         }
-
         return (
           <button
             key={index}
